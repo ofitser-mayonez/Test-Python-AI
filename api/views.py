@@ -1,6 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
-from api.models import Book, Athenaeum
-from api.serializers import BookSerializer, AthenaeumSerializer
+
+from api.models import Athenaeum, Book
+from api.serializers import AthenaeumSerializer, BookSerializer
 
 
 class BookViewSet(ModelViewSet):

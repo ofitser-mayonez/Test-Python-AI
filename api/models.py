@@ -1,6 +1,6 @@
 from django.db import models
 
-from api.constants import (BOOK_NAME_LENGTH, ATHENAEUM_NAME_LENGTH)
+from api.constants import ATHENAEUM_NAME_LENGTH, BOOK_NAME_LENGTH
 
 
 class Book(models.Model):
@@ -10,6 +10,7 @@ class Book(models.Model):
         max_length=BOOK_NAME_LENGTH,
         verbose_name='Название книги'
     )
+
     def __str__(self):
         return self.name
 
@@ -21,14 +22,24 @@ class Athenaeum(models.Model):
         max_length=ATHENAEUM_NAME_LENGTH,
         verbose_name='Название библиотеки'
     )
-    book = models.ForeignKey(
+    book = models.ManyToManyField(
         Book,
-        on_delete=models.CASCADE,
-        related_name='books'
-    )
-    quantity = models.PositiveSmallIntegerField(
-        verbose_name='Количество книг'
+        through='BookAthenaeum',
     )
 
     def __str__(self):
         return self.name
+
+
+class BookAthenaeum(models.Model):
+    """Модель связи книг и библиотек."""
+
+    athenaeum = models.ForeignKey(
+        Athenaeum, on_delete=models.CASCADE
+    )
+    book = models.ForeignKey(
+        Book, on_delete=models.CASCADE
+    )
+    quantity = models.PositiveSmallIntegerField(
+        verbose_name='Количество книг'
+    )
